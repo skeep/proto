@@ -1,0 +1,78 @@
+@import "compass_twitter_bootstrap";
+
+.edit{
+	overflow: hidden;
+}
+
+.screen-holder, .config{
+	position: fixed;
+}
+.screen {
+	position: relative;
+	margin: 0 auto;
+	width: 1024px;
+}
+
+.mode {
+	position: fixed;
+	right: 0;
+	top: 0;
+}
+
+
+.spot-holder{
+	position: absolute;
+	.spot{
+		background: red;
+		opacity: .5;
+		display: block;
+		text-align: center;
+		color: #fff;
+		font-size: 108%;
+		text-shadow: 1px 1px 0 rgba(0,0,0,.5);
+		&.haveTarget {
+			background: green
+		}
+	}
+	.handle, .delete {
+		position: relative;
+		cursor: pointer;
+		visibility: hidden;
+	}
+	.handle {
+		cursor: move;
+	}
+	&:hover{
+		.handle, .delete{
+			visibility: visible;
+		}
+	}
+}
+
+
+
+.ui-resizable{
+	position: absolute !important;
+}
+
+.link{
+	position: absolute;
+	background: yellow;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
+	opacity: .2;
+	display: block;
+	cursor: pointer;
+}
+
+.list{
+	width: 200px;
+	position: absolute;
+	img {
+		width: 100%;
+		border: 1px solid rgba(0,0,0,0.6);
+		margin: 0 0 10px 0;
+		box-shadow: 0 0 5px rgba(0,0,0,0.5);
+		box-sizing: border-box;
+	}
+}

@@ -1,0 +1,41 @@
+<div class="edit row-fluid" ng-show="editMode">
+    <div class="screen-holder span12">
+        <div class="screen" ng-init="changeScreen(screenList[0].id)">
+            <img ng-src="{{screen.imageData}}" ng-click="addSpot($event,screen.id)">
+            <div class="spot-holder" draggable ng-click="selectTarget(screen.id, $index)"
+            style="top:{{spot.top}}px; left: {{spot.left}}px; width:{{spot.width}}px; height: {{spot.height+20}}px"
+            ng-repeat="spot in screen.hotspots" data-screen="{{screen.id}}" data-id="{{$index}}">
+                <span class="handle badge badge-info ">
+                    handel
+                </span>
+                <span class="badge badge-important delete" ng-click="deleteSpot(screen.id, $index)">
+                    delete
+                </span>
+                <span resizable class="spot" ng-class="{haveTarget:spot.target}" data-screen="{{screen.id}}"
+                data-id="{{$index}}" style="width:{{spot.width}}px; height: {{spot.height}}px; line-height: {{spot.height}}px">
+                    {{spot.target}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="list">
+        <div id="drop_zone" class="well">
+            Drop files here
+        </div>
+        <output id="list">
+        </output>
+        <img src="{{screen.imageData}}" ng-repeat="screen in screenList" ng-click="selectScreen(screen.id)"
+        />
+    </div>
+</div>
+<div class="view" ng-show="!editMode">
+    <div class="screen" ng-init="changeScreen(screenList[0].id)">
+        <img ng-src="{{screen.imageData}}">
+        <span class="link" ng-click="changeScreen(spot.target)" style="top:{{spot.top+20}}px; left: {{spot.left}}px; width:{{spot.width}}px; height: {{spot.height}}px"
+        ng-repeat="spot in screen.hotspots">
+        </span>
+    </div>
+</div>
+<div class="mode form-inline">
+    <button for="mode" ng-click="changeMode()">change mode</button>
+</div>
