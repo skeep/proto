@@ -30,6 +30,8 @@
 		color: #fff;
 		font-size: 108%;
 		text-shadow: 1px 1px 0 rgba(0,0,0,.5);
+		box-shadow: 0 0 10px rgba(0,0,0,0.7);
+		border-radius: 5px;
 		&.haveTarget {
 			background: green
 		}
@@ -43,6 +45,11 @@
 		cursor: move;
 	}
 	&:hover{
+		.spot{
+			-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+			filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=90);
+			opacity: 0.9;
+		}
 		.handle, .delete{
 			visibility: visible;
 		}

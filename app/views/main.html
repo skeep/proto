@@ -2,19 +2,20 @@
     <div class="screen-holder span12">
         <div class="screen" ng-init="changeScreen(screenList[0].id)">
             <img ng-src="{{screen.imageData}}" ng-click="addSpot($event,screen.id)">
-            <div class="spot-holder" draggable ng-click="selectTarget(screen.id, $index)"
+            <div class="spot-holder" draggable tooltip ng-click="selectTarget(screen.id, $index)"
             style="top:{{spot.top}}px; left: {{spot.left}}px; width:{{spot.width}}px; height: {{spot.height+20}}px"
-            ng-repeat="spot in screen.hotspots" data-screen="{{screen.id}}" data-id="{{$index}}">
-                <span class="handle badge badge-info ">
+            ng-repeat="spot in screen.hotspots" data-screen="{{screen.id}}" data-id="{{$index}}" data-toggle="tooltip" title="Click on me &amp; choose target image from left" data-placement="bottom">
+                <span class="handle label label-info ">
                     handel
                 </span>
-                <span class="badge badge-important delete" ng-click="deleteSpot(screen.id, $index)">
+                <span class="label label-important delete" ng-click="deleteSpot(screen.id, $index)">
                     delete
                 </span>
                 <span resizable class="spot" ng-class="{haveTarget:spot.target}" data-screen="{{screen.id}}"
                 data-id="{{$index}}" style="width:{{spot.width}}px; height: {{spot.height}}px; line-height: {{spot.height}}px">
-                    {{spot.target}}
+                    <!-- <span ng-show="!spot.target">Click on me &amp; choose target image from left</span> -->
                 </span>
+                <span class="label label-success name">{{screens[spot.target].imageName}}</span>
             </div>
         </div>
     </div>
@@ -37,5 +38,5 @@
     </div>
 </div>
 <div class="mode form-inline">
-    <button for="mode" ng-click="changeMode()">change mode</button>
+    <button class="btn btn-primary" ng-click="changeMode()">Switch Preview/Edit Mode</button>
 </div>

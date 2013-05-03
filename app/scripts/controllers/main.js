@@ -33,9 +33,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 	};
 
 	$scope.changeScreen = function (screenId) {
-		console.log(screenId);
 		$scope.screen = $scope.screens[screenId];
-		console.log($scope.screen);
 	};
 
 	$scope.addSpot = function (e, screenId) {
