@@ -23,7 +23,8 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 	$scope.screenList = _.map($scope.screenList, function (s) {
 		return {
 			id: s,
-			imageData: $scope.screens[s].imageData
+			imageData: $scope.screens[s].imageData,
+			imageName : $scope.screens[s].imageName
 		};
 	});
 	// console.log($scope.screenList);
@@ -77,13 +78,13 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 
 		// files is a FileList of File objects. List some properties.
 		var output = [];
-		for (var i = 0, f; f = files[i]; i++) {
-			output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-			f.size, ' bytes, last modified: ',
-			f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-				'</li>');
-		}
-		document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+		// for (var i = 0, f; f = files[i]; i++) {
+		// 	output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+		// 	f.size, ' bytes, last modified: ',
+		// 	f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+		// 		'</li>');
+		// }
+		// document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
 
 		// Loop through the FileList and render image files as thumbnails.
 		for (var i = 0, f; f = files[i]; i++) {
@@ -99,10 +100,6 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 			reader.onload = (function (theFile) {
 				return function (e) {
 					// Render thumbnail.
-					var span = document.createElement('span');
-					span.innerHTML = ['<img class="thumb" src="', e.target.result,
-						'" title="', escape(theFile.name), '"/>'].join('');
-					document.getElementById('list').insertBefore(span, null);
 					var id = randomUUID();
 
 					$scope.screens[id] = {
@@ -118,6 +115,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 			// Read in the image file as a data URL.
 			reader.readAsDataURL(f);
 		}
+		$scope.$apply();
 	}
 
 	function handleDragOver(evt) {
