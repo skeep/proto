@@ -1,24 +1,28 @@
+<header>
+    <div class="form-inline">
+        <button class="btn btn-primary" ng-click="changeMode()">
+            Switch Preview/Edit Mode
+        </button>
+    </div>
+</header>
 <div class="edit row-fluid" ng-show="editMode">
     <div class="screen-holder span12">
         <div class="screen" ng-init="changeScreen(screenList[0].id)">
             <img ng-src="{{screen.imageData}}" ng-click="addSpot($event,screen.id)">
-            <div class="spot-holder" draggable="" tooltip="" ng-click="selectTarget(screen.id, $index)" style="top:{{spot.top}}px; left: {{spot.left}}px; width:{{spot.width}}px; height: {{spot.height+20}}px" ng-repeat="spot in screen.hotspots" data-screen="{{screen.id}}" data-id="{{$index}}" data-toggle="tooltip" title="Click on me &amp; choose target image from left" data-placement="bottom">
-                <span class="handle label label-info">
-                    handel
+            <div class="spot-holder" draggable="" style="top:{{spot.top}}px; left: {{spot.left}}px; width:{{spot.width}}px; height: {{spot.height+20}}px" ng-repeat="spot in screen.hotspots" data-screen="{{screen.id}}" data-id="{{$index}}" title="Click on me &amp; choose target image from left" ng-class="{'animated pulse':spotId == $index }">
+                <span class="btn btn-danger btn-mini delete" ng-click="deleteSpot(screen.id,
+                $index)">
+                    X
                 </span>
-                <span class="label label-important delete" ng-click="deleteSpot(screen.id, $index)">
-                    delete
+                <span class="handle">
                 </span>
-                <span resizable="" class="spot" ng-class="{haveTarget:spot.target}" data-screen="{{screen.id}}" data-id="{{$index}}" style="width:{{spot.width}}px; height: {{spot.height}}px; line-height: {{spot.height}}px">
-                    <!-- <span ng-show="!spot.target">Click on me &amp; choose target image from left</span> -->
-                </span>
-                <span class="label label-success name">
-                    {{screens[spot.target].imageName}}
+                <span resizable="" class="spot" ng-class="{haveTarget:spot.target}" data-screen="{{screen.id}}" data-id="{{$index}}" style="width:{{spot.width}}px; height: {{spot.height}}px; line-height: {{spot.height}}px" ng-click="selectTarget(screen.id, $index)">
+                    {{screens[spot.target].imageName || 'No target yet ...'}}
                 </span>
             </div>
         </div>
     </div>
-    <div class="list">
+    <div class="image-list">
         <div id="drop_zone" class="dropzone">
             + drop files here
         </div>
@@ -32,16 +36,26 @@
             </label>
         </div>
     </div>
+    <div class="spot-list">
+        <div class="counter">
+            <span class="badge badge-warning">{{screen.hotspots.length}}</span> hotspots
+        </div>
+        <ul class="unstyled">
+            <li ng-repeat="spot in screen.hotspots">
+                <span ng-click="selectTarget(screen.id, $index)">
+                    {{screens[spot.target].imageName || 'No target yet ...'}}
+                </span>
+                <button class="btn btn-mini btn-danger" ng-click="deleteSpot(screen.id,$index)">
+                    X
+                </button>
+            </li>
+        </ul>
+    </div>
 </div>
 <div class="view" ng-show="!editMode">
     <div class="screen" ng-init="changeScreen(screenList[0].id)">
         <img ng-src="{{screen.imageData}}">
-        <span class="link" ng-click="changeScreen(spot.target)" style="top:{{spot.top+20}}px; left: {{spot.left}}px; width:{{spot.width}}px; height: {{spot.height}}px" ng-repeat="spot in screen.hotspots">
+        <span class="link" ng-click="changeScreen(spot.target)" style="top:{{spot.top+28}}px; left: {{spot.left+2}}px; width:{{spot.width}}px; height: {{spot.height}}px" ng-repeat="spot in screen.hotspots">
         </span>
     </div>
-</div>
-<div class="mode form-inline">
-    <button class="btn btn-primary" ng-click="changeMode()">
-        Switch Preview/Edit Mode
-    </button>
 </div>
