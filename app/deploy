@@ -1,1 +1,2 @@
 git subtree push --prefix dist heroku master
+open -a Google\ Chrome --args --disable-web-security
