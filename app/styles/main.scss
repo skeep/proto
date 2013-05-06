@@ -5,8 +5,9 @@ body {
 	background: url('../../images/wild_oliva_@2X.png')
 }
 
-.edit{
+.edit, .view{
 	overflow: hidden;
+	margin-top: 60px;
 }
 
 .screen-holder, .config{
@@ -14,7 +15,7 @@ body {
 }
 .screen {
 	position: relative;
-	margin: 60px auto;
+	margin: 0 auto;
 	width: 1024px;
 	img{
 		box-shadow: 0 10px 20px rgba(0,0,0,0.2)
@@ -189,4 +190,26 @@ header {
 	right: 0;
 	top: 50px;
 	color: white;
+	.counter{
+		text-align: right;
+		padding: 10px;
+	}
+	ul{
+		margin-right: 10px;
+	}
+	li{
+		text-align: right;
+		width: 200px;
+		margin-bottom: 10px;
+		span {
+			margin-right: 5px;
+			&:hover{
+				cursor: pointer;
+				text-decoration: underline;
+			}
+		}
+	}
+	.btn{
+		border-radius: 10px;
+	}
 }
