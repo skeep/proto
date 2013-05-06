@@ -1,12 +1,17 @@
+<header>
+    <div class="form-inline">
+        <button class="btn btn-primary" ng-click="changeMode()">
+            Switch Preview/Edit Mode
+        </button>
+    </div>
+</header>
 <div class="edit row-fluid" ng-show="editMode">
     <div class="screen-holder span12">
         <div class="screen" ng-init="changeScreen(screenList[0].id)">
             <img ng-src="{{screen.imageData}}" ng-click="addSpot($event,screen.id)">
-            <div class="spot-holder" draggable ng-click="selectTarget(screen.id, $index)"
-            style="top:{{spot.top}}px; left: {{spot.left}}px; width:{{spot.width}}px; height: {{spot.height+20}}px"
+            <div class="spot-holder" draggable style="top:{{spot.top}}px; left: {{spot.left}}px; width:{{spot.width}}px; height: {{spot.height+20}}px"
             ng-repeat="spot in screen.hotspots" data-screen="{{screen.id}}" data-id="{{$index}}"
-            data-toggle="tooltip" title="Click on me &amp; choose target image from left"
-            data-placement="bottom">
+            title="Click on me &amp; choose target image from left" ng-class="{'animated pulse':spotId == $index }">
                 <span class="btn btn-danger btn-mini delete" ng-click="deleteSpot(screen.id,
                 $index)">
                     X
@@ -14,10 +19,8 @@
                 <span class="handle">
                 </span>
                 <span resizable class="spot" ng-class="{haveTarget:spot.target}" data-screen="{{screen.id}}"
-                data-id="{{$index}}" style="width:{{spot.width}}px; height: {{spot.height}}px; line-height: {{spot.height}}px">
-                    <!-- <span class="target"> -->
+                data-id="{{$index}}" style="width:{{spot.width}}px; height: {{spot.height}}px; line-height: {{spot.height}}px" ng-click="selectTarget(screen.id, $index)">
                     {{screens[spot.target].imageName || 'No target yet ...'}}
-                    <!-- </span> -->
                 </span>
             </div>
         </div>
@@ -37,14 +40,19 @@
         </div>
     </div>
     <div class="spot-list">
-        <ol>
+        <span class="counter">
+            {{screen.hotspots.length}} hotspots
+        </span>
+        <ul>
             <li ng-repeat="spot in screen.hotspots">
-                {{screens[spot.target].imageName || 'No target yet ...'}}
                 <button class="btn btn-mini btn-danger" ng-click="deleteSpot(screen.id,$index)">
                     Delete
                 </button>
+                <span>
+                    {{screens[spot.target].imageName || 'No target yet ...'}}
+                </span>
             </li>
-        </ol>
+        </ul>
     </div>
 </div>
 <div class="view" ng-show="!editMode">
@@ -54,9 +62,4 @@
         ng-repeat="spot in screen.hotspots">
         </span>
     </div>
-</div>
-<div class="mode form-inline">
-    <button class="btn btn-primary" ng-click="changeMode()">
-        Switch Preview/Edit Mode
-    </button>
 </div>

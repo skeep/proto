@@ -9,6 +9,8 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 		localStorage.data = JSON.stringify(data);
 	};
 
+	$scope.spotId = null;
+
 	var targetSelectionMode = false,
 		baseScreenId = null,
 		spotId = null;
@@ -39,8 +41,8 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 
 	$scope.addSpot = function (e, screenId) {
 		$scope.screens[screenId].hotspots.push({
-			'top': e.offsetY,
-			'left': e.offsetX,
+			'top': e.offsetY-28,
+			'left': e.offsetX-2,
 			'width': 150,
 			'height': 30,
 			target: null
@@ -55,15 +57,15 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 	$scope.selectTarget = function (screen, index) {
 		targetSelectionMode = true;
 		baseScreenId = screen;
-		spotId = index;
+		$scope.spotId = index;
 	};
 
 	$scope.selectScreen = function (screenId) {
 		if (targetSelectionMode) {
-			$scope.screens[baseScreenId].hotspots[spotId].target = screenId;
+			$scope.screens[baseScreenId].hotspots[$scope.spotId].target = screenId;
 			targetSelectionMode = false,
 			baseScreenId = null,
-			spotId = null;
+			$scope.spotId = null;
 			$scope.set($scope.screens);
 		} else {
 			$scope.changeScreen(screenId);
