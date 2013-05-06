@@ -2,40 +2,48 @@
     <div class="screen-holder span12">
         <div class="screen" ng-init="changeScreen(screenList[0].id)">
             <img ng-src="{{screen.imageData}}" ng-click="addSpot($event,screen.id)">
-            <div class="spot-holder" draggable tooltip ng-click="selectTarget(screen.id, $index)"
+            <div class="spot-holder" draggable ng-click="selectTarget(screen.id, $index)"
             style="top:{{spot.top}}px; left: {{spot.left}}px; width:{{spot.width}}px; height: {{spot.height+20}}px"
             ng-repeat="spot in screen.hotspots" data-screen="{{screen.id}}" data-id="{{$index}}"
             data-toggle="tooltip" title="Click on me &amp; choose target image from left"
             data-placement="bottom">
-                <span class="handle label label-info ">
-                    handel
-                </span>
-                <span class="label label-important delete" ng-click="deleteSpot(screen.id, $index)">
+                <span class="handle"></span>
+                <!-- <span class="label label-important delete" ng-click="deleteSpot(screen.id,
+                $index)">
                     delete
-                </span>
+                </span> -->
                 <span resizable class="spot" ng-class="{haveTarget:spot.target}" data-screen="{{screen.id}}"
                 data-id="{{$index}}" style="width:{{spot.width}}px; height: {{spot.height}}px; line-height: {{spot.height}}px">
-                    <!-- <span ng-show="!spot.target">Click on me &amp; choose target image from left</span> -->
-                </span>
-                <span class="label label-success name">
-                    {{screens[spot.target].imageName}}
+                    <!-- <span class="target"> -->
+                        {{screens[spot.target].imageName || 'No target yet ...'}}
+                    <!-- </span> -->
                 </span>
             </div>
         </div>
     </div>
-    <div class="list">
+    <div class="image-list">
         <div id="drop_zone" class="dropzone">
             + drop files here
         </div>
         <div class="image" ng-repeat="screen in screenList">
             <input type="radio" name="screens" id="radio_{{$index}}">
             <label for="radio_{{$index}}">
-                <img src="{{screen.imageData}}" ng-click="selectScreen(screen.id)"/>
+                <img src="{{screen.imageData}}" ng-click="selectScreen(screen.id)" />
                 <span class="name">
                     {{screen.imageName}}
                 </span>
             </label>
         </div>
+    </div>
+    <div class="spot-list">
+        <ol>
+            <li ng-repeat="spot in screen.hotspots">
+                {{screens[spot.target].imageName || 'No target yet ...'}}
+                <button class="btn btn-mini btn-danger" ng-click="deleteSpot(screen.id,$index)">
+                    Delete
+                </button>
+            </li>
+        </ol>
     </div>
 </div>
 <div class="view" ng-show="!editMode">
