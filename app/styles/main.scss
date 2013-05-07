@@ -170,6 +170,12 @@ header {
 			opacity: 1;
 			cursor: pointer;
 		}
+		.btn{
+			@include border-radius(0 10px, 10px 10px);
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
 	}
 }
 

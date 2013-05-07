@@ -39,6 +39,12 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 		$scope.screen = $scope.screens[screenId];
 	};
 
+	$scope.deleteScreen = function (screenId) {
+		delete $scope.screens[screenId];
+		$scope.set($scope.screens);
+		$scope.screens = get();
+	};
+
 	$scope.addSpot = function (e, screenId) {
 		$scope.screens[screenId].hotspots.push({
 			'top': e.offsetY-28,
