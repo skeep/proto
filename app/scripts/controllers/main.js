@@ -1,13 +1,25 @@
 angular.module('protoApp').controller('MainCtrl', function ($scope) {
 	'use strict';
 
-	function get() {
-		return JSON.parse(localStorage.data);
-	}
-
 	$scope.set = function (data) {
-		localStorage.data = JSON.stringify(data);
+		writeAppDataFile(data);
 	};
+
+	$scope.loadScreen = function(data) {
+		$scope.screens = JSON.parse(data);
+		$scope.screenList = _.keys($scope.screens);
+		$scope.screenList = _.map($scope.screenList, function (s) {
+			return {
+				id: s,
+				imageData: $scope.screens[s].imageData,
+				imageName : $scope.screens[s].imageName
+			};
+		});
+		if ($scope.screenList[0]) {
+			$scope.screen = $scope.screens[$scope.screenList[0].id];
+			$scope.$apply();
+		}
+	}
 
 	$scope.spotId = null;
 
@@ -15,21 +27,8 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 		baseScreenId = null,
 		spotId = null;
 
-	if (typeof localStorage.data === 'undefined') {
-		var protoData = {};
-		$scope.set(protoData);
-	}
-	$scope.screens = get();
+	requestForFile($scope.loadScreen);
 
-	$scope.screenList = _.keys($scope.screens);
-	$scope.screenList = _.map($scope.screenList, function (s) {
-		return {
-			id: s,
-			imageData: $scope.screens[s].imageData,
-			imageName : $scope.screens[s].imageName
-		};
-	});
-	// console.log($scope.screenList);
 	$scope.editMode = true;
 	$scope.changeMode = function(){
 		$scope.editMode = !$scope.editMode;
@@ -42,7 +41,6 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 	$scope.deleteScreen = function (screenId) {
 		delete $scope.screens[screenId];
 		$scope.set($scope.screens);
-		$scope.screens = get();
 	};
 
 	$scope.addSpot = function (e, screenId) {
@@ -175,3 +173,111 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 	}
 
 });
+
+// Note: The file system has been prefixed as of Google Chrome 12:
+window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+var fileSystem = null;
+
+function requestForFile(loadScreen) {
+	window.webkitStorageInfo.requestQuota(
+		PERSISTENT, 
+		10*1024*1024, 
+		function(grantedBytes) {
+	  	window.requestFileSystem(PERSISTENT, grantedBytes, function(fs) {
+	  		fileSystem = fs;
+	  		fileSystem.root.getFile('appdata.txt', {create: true, exclusive: false}, function(fileEntry) {
+			    readAppDataFile(loadScreen);
+			    //Incase you want to clear the file and start afresh, comment above line and uncomment
+			    //below 3 lines. Undo this change once all clear.
+			    // fileEntry.remove(function() {
+			    //   console.log('File removed.');
+			    // }, errorHandler);
+			  }, errorHandler);
+	  	}, errorHandler);
+		}, 
+		function(e) {
+	  console.log('Error', e);
+	});
+}
+
+function readAppDataFile(loadScreen) {
+	fileSystem.root.getFile('appdata.txt', {create: false}, function(fileEntry) {
+    fileEntry.file(function(file) {
+       var reader = new FileReader();
+       reader.onloadend = function(e) {
+       		console.log('File read: "' + this.result + '"');
+        	loadScreen(this.result || '{}');
+       };
+       reader.readAsText(file);
+    }, errorHandler);
+  }, errorHandler);
+}
+
+function writeAppDataFile(data) {
+	//remove file first. didn't find a way to clear/overwrite file content.
+	fileSystem.root.getFile('appdata.txt', {}, function(fileEntry) {
+    fileEntry.remove(function() {
+      console.log('File removed.');
+    }, errorHandler);
+  }, errorHandler);
+
+	//and the recreate it so that its empty.
+	window.webkitStorageInfo.requestQuota(
+		PERSISTENT, 
+		100*1024*1024, 
+		function(grantedBytes) {
+	  	window.requestFileSystem(PERSISTENT, grantedBytes, function(fs) {
+	  		fileSystem = fs;
+	  		fileSystem.root.getFile('appdata.txt', {create: true, exclusive: false}, function(fileEntry) {
+			    fileEntry.createWriter(function(fileWriter) {
+
+			      fileWriter.onwriteend = function(e) {
+			        console.log('Write completed.');
+			      };
+
+			      fileWriter.onerror = function(e) {
+			        console.log('Write failed: ' + e.toString());
+			      };
+
+			      // Create a new Blob and write it to log.txt.
+			      var blob = new Blob([JSON.stringify(data)], {type: 'text/plain'});
+
+			      fileWriter.write(blob);
+			      console.log(blob);
+
+			    }, errorHandler);
+			  }, errorHandler);
+	  	}, errorHandler);
+		}, 
+		function(e) {
+	  console.log('Error', e);
+	});
+}
+
+function errorHandler(e) {
+  var msg = '';
+
+  switch (e.code) {
+    case FileError.QUOTA_EXCEEDED_ERR:
+      msg = 'QUOTA_EXCEEDED_ERR';
+      break;
+    case FileError.NOT_FOUND_ERR:
+      msg = 'NOT_FOUND_ERR';
+      break;
+    case FileError.SECURITY_ERR:
+      msg = 'SECURITY_ERR';
+      break;
+    case FileError.INVALID_MODIFICATION_ERR:
+      msg = 'INVALID_MODIFICATION_ERR';
+      break;
+    case FileError.INVALID_STATE_ERR:
+      msg = 'INVALID_STATE_ERR';
+      break;
+    default:
+      msg = 'Unknown Error';
+      break;
+  };
+
+  console.log('Error: ' + msg);
+}
+
