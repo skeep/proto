@@ -137,7 +137,7 @@ angular.module('protoApp').factory('fs', function () {
 			onError: function () {
 				alert('You must put something in the File Contents or there will be nothing to save!');
 			},
-			swf: 'media/downloadify.swf',
+			swf: 'components/downloadify/downloadify.swf',
 			downloadImage: 'images/download.png',
 			width: 100,
 			height: 30,

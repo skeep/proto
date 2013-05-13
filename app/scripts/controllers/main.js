@@ -128,6 +128,4 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 	var dropZone = document.getElementById('drop_zone');
 	dropZone.addEventListener('dragover', handleDragOver, false);
 	dropZone.addEventListener('drop', handleFileSelect, false);
-
-	
 });
