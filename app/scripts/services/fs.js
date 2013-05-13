@@ -122,9 +122,34 @@ angular.module('protoApp').factory('fs', function () {
 		console.log('Error: ' + msg);
 	}
 
+	function addSavetoFileButton(scope) {
+		Downloadify.create('downloadFile', {
+			filename: function () {
+				return 'appdata.txt';
+			},
+			data: JSON.stringify(scope.screens),
+			onComplete: function () {
+				alert('Your File Has Been Saved!');
+			},
+			onCancel: function () {
+				alert('You have cancelled the saving of this file.');
+			},
+			onError: function () {
+				alert('You must put something in the File Contents or there will be nothing to save!');
+			},
+			swf: 'media/downloadify.swf',
+			downloadImage: 'images/download.png',
+			width: 100,
+			height: 30,
+			transparent: true,
+			append: false
+		});
+	}
+
 	return {
 		requestForFile: requestForFile,
-		writeAppDataFile: writeAppDataFile
+		writeAppDataFile: writeAppDataFile,
+		download: addSavetoFileButton
 	};
 
 });
