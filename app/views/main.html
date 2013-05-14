@@ -1,5 +1,10 @@
 <header>
     <div class="form-inline">
+        <span id="app-name">App Name</span>
+        <input type="file" id="files" name="file" />
+        <div id="progress_bar"><div class="percent">0%</div></div>
+        <button ng-click="reset()">Reset</button>
+
         <button class="btn btn-primary" ng-click="changeMode()">
             Switch Preview/Edit Mode
         </button>
@@ -41,7 +46,7 @@
         </div>
     </div>
     <div class="spot-list">
-        <p id="downloadFile" style="margin-left: 55px;">
+        <p id="downloadFile">
             You must have Flash 10 installed to download App Data file.
         </p>
         <div class="counter">

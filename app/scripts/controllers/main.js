@@ -2,7 +2,11 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 	'use strict';
 
 	$scope.set = function (data) {
-		writeAppDataFile(data);
+		writeTempFile(data);
+	};
+
+	$scope.reset = function () {
+		writeTempFile({});
 	};
 
 	$scope.loadScreen = function(data) {
@@ -28,7 +32,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 		baseScreenId = null,
 		spotId = null;
 
-	requestForFile($scope.loadScreen);
+	requestForTempFile($scope.loadScreen);
 
 	$scope.editMode = true;
 	$scope.changeMode = function(){
@@ -136,6 +140,66 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 	dropZone.addEventListener('dragover', handleDragOver, false);
 	dropZone.addEventListener('drop', handleFileSelect, false);
 
+	var reader;
+	var progress = document.querySelector('.percent');
+
+	// function errorHandler(evt) {
+	//     switch(evt.target.error.code) {
+	//       case evt.target.error.NOT_FOUND_ERR:
+	//         alert('File Not Found!');
+	//         break;
+	//       case evt.target.error.NOT_READABLE_ERR:
+	//         alert('File is not readable');
+	//         break;
+	//       case evt.target.error.ABORT_ERR:
+	//         break; // noop
+	//       default:
+	//         alert('An error occurred reading this file.');
+	//     };
+	// }
+
+	function updateProgress(evt) {
+	    // evt is an ProgressEvent.
+	    if (evt.lengthComputable) {
+	      	var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+	      	// Increase the progress bar length.
+	      	if (percentLoaded < 100) {
+	        	progress.style.width = percentLoaded + '%';
+	        	progress.textContent = percentLoaded + '%';
+	      	}
+	    }
+	}
+
+	function handleInputFile(evt) {
+	    // Reset progress indicator on new file selection.
+	    progress.style.width = '0%';
+	    progress.textContent = '0%';
+
+	    reader = new FileReader();
+	    reader.onerror = errorHandler;
+	    reader.onprogress = updateProgress;
+	    reader.onabort = function(e) {
+	      	alert('File read cancelled');
+	    };
+	    reader.onloadstart = function(e) {
+	      	document.getElementById('progress_bar').className = 'loading';
+	    };
+	    reader.onload = function(e) {
+		    // Ensure that the progress bar displays 100% at the end.
+		    progress.style.width = '100%';
+		    progress.textContent = '100%';
+		    //setTimeout("document.getElementById('progress_bar').className='';", 2000);
+		    $scope.loadScreen(e.target.result);
+		    writeTempFile(JSON.parse(e.target.result));
+		    $(progress).parent().hide();
+	    }
+
+	    // Read in the input file as a binary string.
+	    reader.readAsBinaryString(evt.target.files[0]);
+	}
+
+	document.getElementById('files').addEventListener('change', handleInputFile, false);
+
 	/**
 	 * Create and return a "version 4" RFC-4122 UUID string.
 	 *
@@ -179,15 +243,15 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 var fileSystem = null;
 
-function requestForFile(loadScreen) {
+function requestForTempFile(loadScreen) {
 	window.webkitStorageInfo.requestQuota(
 		PERSISTENT, 
 		10*1024*1024, 
 		function(grantedBytes) {
 	  	window.requestFileSystem(PERSISTENT, grantedBytes, function(fs) {
 	  		fileSystem = fs;
-	  		fileSystem.root.getFile('appdata.txt', {create: true, exclusive: false}, function(fileEntry) {
-			    readAppDataFile(loadScreen);
+	  		fileSystem.root.getFile('TempFile', {create: true, exclusive: false}, function(fileEntry) {
+			    readTempFile(loadScreen);
 			    //Incase you want to clear the file and start afresh, comment above line and uncomment
 			    //below 3 lines. Undo this change once all clear.
 			    // fileEntry.remove(function() {
@@ -201,12 +265,12 @@ function requestForFile(loadScreen) {
 	});
 }
 
-function readAppDataFile(loadScreen) {
-	fileSystem.root.getFile('appdata.txt', {create: false}, function(fileEntry) {
+function readTempFile(loadScreen) {
+	fileSystem.root.getFile('TempFile', {create: false}, function(fileEntry) {
     fileEntry.file(function(file) {
        var reader = new FileReader();
        reader.onloadend = function(e) {
-       		console.log('File read: "' + this.result + '"');
+       		console.log('Temp File content: "' + this.result + '"');
         	loadScreen(this.result || '{}');
        };
        reader.readAsText(file);
@@ -214,9 +278,9 @@ function readAppDataFile(loadScreen) {
   }, errorHandler);
 }
 
-function writeAppDataFile(data) {
+function writeTempFile(data) {
 	//remove file first. didn't find a way to clear/overwrite file content.
-	fileSystem.root.getFile('appdata.txt', {}, function(fileEntry) {
+	fileSystem.root.getFile('TempFile', {}, function(fileEntry) {
     fileEntry.remove(function() {
       console.log('File removed.');
     }, errorHandler);
@@ -229,7 +293,7 @@ function writeAppDataFile(data) {
 		function(grantedBytes) {
 	  	window.requestFileSystem(PERSISTENT, grantedBytes, function(fs) {
 	  		fileSystem = fs;
-	  		fileSystem.root.getFile('appdata.txt', {create: true, exclusive: false}, function(fileEntry) {
+	  		fileSystem.root.getFile('TempFile', {create: true, exclusive: false}, function(fileEntry) {
 			    fileEntry.createWriter(function(fileWriter) {
 
 			      fileWriter.onwriteend = function(e) {

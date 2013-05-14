@@ -3,6 +3,7 @@
 
 body {
 	background: rgba(0,0,0,0.8) url('../../images/wild_oliva_@2X.png');
+
 }
 
 .edit, .view{
@@ -193,18 +194,17 @@ header {
 
 .spot-list{
 	position: absolute;
+	width: 200px;
 	right: 0;
 	top: 50px;
 	color: white;
 	.counter{
-		text-align: right;
 		padding: 10px;
 	}
 	ul{
 		margin-right: 10px;
 	}
 	li{
-		text-align: right;
 		width: 200px;
 		margin-bottom: 10px;
 		span {
@@ -218,4 +218,44 @@ header {
 	.btn{
 		border-radius: 10px;
 	}
+}
+
+#app-name {
+	font-size: 32px;
+	color: white;
+	padding: 18px;
+}
+
+#progress_bar {
+    margin: 10px 0;
+    padding: 3px;
+    border: 1px solid #aaa;
+    font-size: 14px;
+    width: 150px;
+    display: inline-block;
+    opacity: 0;
+    -moz-transition: opacity 1s linear;
+    -o-transition: opacity 1s linear;
+    -webkit-transition: opacity 1s linear;
+    -webkit-transition: display 3s linear;
+}
+
+#progress_bar.loading {
+	opacity: 1.0;
+}
+
+#progress_bar .percent {
+	background-color: #99ccff;
+	display: inline-block;
+	height: auto;
+	width: 0;
+}
+
+input[type=file] {
+	color: white;
+	line-height: 0px;
+}
+
+#downloadFile {
+	margin-left: 10px;
 }
