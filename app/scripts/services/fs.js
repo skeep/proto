@@ -9,7 +9,6 @@ angular.module('protoApp').factory('fs', function () {
 		window.webkitStorageInfo.requestQuota(
 		PERSISTENT,
 		10 * 1024 * 1024,
-
 		function (grantedBytes) {
 			window.requestFileSystem(PERSISTENT, grantedBytes, function (fs) {
 				fileSystem = fs;
@@ -18,15 +17,9 @@ angular.module('protoApp').factory('fs', function () {
 					exclusive: false
 				}, function (fileEntry) {
 					readAppDataFile(loadScreen);
-					//Incase you want to clear the file and start afresh, comment above line and uncomment
-					//below 3 lines. Undo this change once all clear.
-					// fileEntry.remove(function() {
-					//   console.log('File removed.');
-					// }, errorHandler);
 				}, errorHandler);
 			}, errorHandler);
 		},
-
 		function (e) {
 			console.log('Error', e);
 		});
@@ -59,7 +52,6 @@ angular.module('protoApp').factory('fs', function () {
 		window.webkitStorageInfo.requestQuota(
 		PERSISTENT,
 		100 * 1024 * 1024,
-
 		function (grantedBytes) {
 			window.requestFileSystem(PERSISTENT, grantedBytes, function (fs) {
 				fileSystem = fs;
@@ -72,7 +64,6 @@ angular.module('protoApp').factory('fs', function () {
 						fileWriter.onwriteend = function (e) {
 							console.log('Write completed.');
 						};
-
 						fileWriter.onerror = function (e) {
 							console.log('Write failed: ' + e.toString());
 						};
@@ -89,7 +80,6 @@ angular.module('protoApp').factory('fs', function () {
 				}, errorHandler);
 			}, errorHandler);
 		},
-
 		function (e) {
 			console.log('Error', e);
 		});

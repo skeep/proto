@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('protoApp').factory('uuid', function () {
 	/**
 	 * Create and return a "version 4" RFC-4122 UUID string.
@@ -18,7 +16,7 @@ angular.module('protoApp').factory('uuid', function () {
 	 * @api private
 	 * @return {String} a "version 4" RFC-4122 UUID string
 	 */
-
+	'use strict';
 	function randomUUID() {
 		var s = [],
 			itoh = '0123456789ABCDEF';
