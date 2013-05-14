@@ -6,7 +6,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope) {
 	};
 
 	$scope.reset = function () {
-		writeTempFile({});
+		writeTempFile();
 	};
 
 	$scope.loadScreen = function(data) {

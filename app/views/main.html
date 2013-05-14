@@ -37,7 +37,7 @@
         <div class="image" ng-repeat="screen in screenList">
             <input type="radio" name="screens" id="radio_{{$index}}">
             <label for="radio_{{$index}}">
-                <img src="{{screen.imageData}}" ng-click="selectScreen(screen.id)" />
+                <img ng-src="{{screen.imageData}}" ng-click="selectScreen(screen.id)" />
                 <span class="name">
                     {{screen.imageName}}
                 </span>

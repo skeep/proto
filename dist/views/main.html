@@ -7,7 +7,7 @@
 </header>
 <div class="edit row-fluid" ng-show="editMode">
     <div class="screen-holder span12">
-        <div class="screen" ng-init="changeScreen(screenList[0].id)">
+        <div class="screen">
             <img ng-src="{{screen.imageData}}" ng-dblclick="addSpot($event,screen.id)">
             <div class="spot-holder" draggable="" style="top:{{spot.top}}px; left: {{spot.left}}px; width:{{spot.width}}px; height: {{spot.height+20}}px" ng-repeat="spot in screen.hotspots" data-screen="{{screen.id}}" data-id="{{$index}}" title="Click on me &amp; choose target image from left" ng-class="{'animated pulse':spotId == $index }">
                 <span class="btn btn-danger btn-mini delete" ng-click="deleteSpot(screen.id,
@@ -29,7 +29,7 @@
         <div class="image" ng-repeat="screen in screenList">
             <input type="radio" name="screens" id="radio_{{$index}}">
             <label for="radio_{{$index}}">
-                <img src="{{screen.imageData}}" ng-click="selectScreen(screen.id)">
+                <img ng-src="{{screen.imageData}}" ng-click="selectScreen(screen.id)">
                 <span class="name">
                     {{screen.imageName}}
                 </span>
@@ -38,6 +38,9 @@
         </div>
     </div>
     <div class="spot-list">
+        <p id="downloadFile" style="margin-left: 55px">
+            You must have Flash 10 installed to download App Data file.
+        </p>
         <div class="counter">
             <span class="badge badge-warning">{{screen.hotspots.length}}</span> hotspots
         </div>
@@ -54,7 +57,7 @@
     </div>
 </div>
 <div class="view" ng-show="!editMode">
-    <div class="screen" ng-init="changeScreen(screenList[0].id)">
+    <div class="screen">
         <img ng-src="{{screen.imageData}}">
         <span class="link" ng-click="changeScreen(spot.target)" style="top:{{spot.top+28}}px; left: {{spot.left+2}}px; width:{{spot.width}}px; height: {{spot.height}}px" ng-repeat="spot in screen.hotspots">
         </span>
