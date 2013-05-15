@@ -5,7 +5,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 		fs.writeAppDataFile(data);
 	};
 
-	$scope.reset = function (data) {
+	$scope.reset = function () {
 		fs.writeAppDataFile({});
 	};
 
@@ -134,6 +134,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 
 	var reader;
 	var progress = document.querySelector('.percent');
+	var progress_bar = document.getElementById('progress_bar');
 
 	function updateProgress(evt) {
 	    // evt is an ProgressEvent.
@@ -159,7 +160,8 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 	      	alert('File read cancelled');
 	    };
 	    reader.onloadstart = function(e) {
-	      	document.getElementById('progress_bar').className = 'loading';
+	    	progress_bar.style.visibility = '';
+	      	progress_bar.className = 'loading';
 	    };
 	    reader.onload = function(e) {
 		    // Ensure that the progress bar displays 100% at the end.
@@ -169,7 +171,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 		    console.log(e.target.result);
 		    $scope.loadScreen(e.target.result);
 		    fs.writeAppDataFile(JSON.parse(e.target.result));
-		    $(progress).parent().hide();
+		    progress_bar.style.visibility = 'hidden';
 	    }
 
 	    // Read in the import file as a binary string.
