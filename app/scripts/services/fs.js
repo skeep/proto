@@ -4,6 +4,9 @@ angular.module('protoApp').factory('fs', function () {
 	// Note: The file system has been prefixed as of Google Chrome 12:
 	window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
 	var fileSystem = null;
+	var reader;
+	var progress = document.querySelector('.percent');
+	var progress_bar = document.getElementById('progress_bar');
 
 	function requestForFile(loadScreen) {
 		window.webkitStorageInfo.requestQuota(
@@ -136,10 +139,53 @@ angular.module('protoApp').factory('fs', function () {
 		});
 	}
 
+	function updateProgress(evt) {
+	    // evt is an ProgressEvent.
+	    if (evt.lengthComputable) {
+	      	var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+	      	// Increase the progress bar length.
+	      	if (percentLoaded < 100) {
+	        	progress.style.width = percentLoaded + '%';
+	        	progress.textContent = percentLoaded + '%';
+	      	}
+	    }
+	}
+
+	function handleImportFile(evt, scope) {
+		// Reset progress indicator on new file selection.
+	    progress.style.width = '0%';
+	    progress.textContent = '0%';
+
+	    reader = new FileReader();
+	    reader.onerror = errorHandler;
+	    reader.onprogress = updateProgress;
+	    reader.onabort = function(e) {
+	      	alert('File read cancelled');
+	    };
+	    reader.onloadstart = function(e) {
+	    	progress_bar.style.visibility = '';
+	      	progress_bar.className = 'loading';
+	    };
+	    reader.onload = function(e) {
+		    // Ensure that the progress bar displays 100% at the end.
+		    progress.style.width = '100%';
+		    progress.textContent = '100%';
+		    //setTimeout("document.getElementById('progress_bar').className='';", 2000);
+		    console.log("Import File: " + e.target.result);
+		    scope.loadScreen(e.target.result);
+		    writeAppDataFile(JSON.parse(e.target.result));
+		    progress_bar.style.visibility = 'hidden';
+	    }
+
+	    // Read in the import file as a binary string.
+	    reader.readAsBinaryString(evt.target.files[0]);
+	}
+
 	return {
 		requestForFile: requestForFile,
 		writeAppDataFile: writeAppDataFile,
-		download: addSavetoFileButton
+		download: addSavetoFileButton,
+		handleImportFile: handleImportFile
 	};
 
 });
