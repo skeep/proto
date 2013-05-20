@@ -2,11 +2,11 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 	'use strict';
 
 	$scope.set = function (data) {
-		fs.writeAppDataFile(data);
+		fs.write(data);
 	};
 
 	$scope.reset = function () {
-		fs.writeAppDataFile({});
+		fs.write({});
 	};
 
 	$scope.loadScreen = function (data) {
@@ -16,6 +16,10 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 			return {
 				id: s,
 				imageData: $scope.screens[s].imageData,
+				getImageData: function (){
+					console.log('reading ' + $scope.screens[s].imageName);
+					fs.read($scope.screens[s].imageName, '', $scope.screens[s]);
+				},
 				imageName: $scope.screens[s].imageName
 			};
 		});
@@ -24,6 +28,14 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 			$scope.$apply();
 		}
 		fs.download($scope);
+
+		//Hack to refresh images that are read asynchrously
+		setTimeout(function(){
+			_.each($scope.screenList, function (s) {
+				s.imageData = $scope.screens[s.id].imageData;
+			});
+			$scope.$apply();
+		}, 2000);
 	}
 
 	$scope.spotId = null;
@@ -104,12 +116,16 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 			reader.onload = (function (theFile) {
 				return function (e) {
 					// Render thumbnail.
-					var id = uuid.get();
+					var id = uuid.get(),
+						imageName = escape(theFile.name);
 
 					$scope.screens[id] = {
 						id: id,
-						imageName: escape(theFile.name),
-						imageData:e.target.result,
+						imageName: imageName,
+						//imageData:e.target.result,
+						writeImageData: (function (){
+							fs.write(e.target.result, imageName);
+						})(),
 						hotspots: []
 					};
 					$scope.set($scope.screens);

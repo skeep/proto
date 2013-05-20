@@ -8,18 +8,21 @@ angular.module('protoApp').factory('fs', function () {
 	var progress = document.querySelector('.percent');
 	var progress_bar = document.getElementById('progress_bar');
 
-	function requestForFile(loadScreen) {
+	function requestForFile(callback, fileName) {
+		var fileName = fileName || 'tempdata'; //if no fileName passed, it is temp data file that we have to work on!!!
 		window.webkitStorageInfo.requestQuota(
 		PERSISTENT,
 		10 * 1024 * 1024,
 		function (grantedBytes) {
 			window.requestFileSystem(PERSISTENT, grantedBytes, function (fs) {
 				fileSystem = fs;
-				fileSystem.root.getFile('appdata.txt', {
+				fileSystem.root.getFile(fileName, {
 					create: true,
 					exclusive: false
 				}, function (fileEntry) {
-					readAppDataFile(loadScreen);
+					if (fileName == "tempdata") { //Read it only if it is temp data as user may want to work on it 
+						read(fileName, callback);
+					}
 				}, errorHandler);
 			}, errorHandler);
 		},
@@ -28,28 +31,29 @@ angular.module('protoApp').factory('fs', function () {
 		});
 	}
 
-	function readAppDataFile(loadScreen) {
-		fileSystem.root.getFile('appdata.txt', {
+	function read(fileName, callback, screen) {
+		fileSystem.root.getFile(fileName, {
 			create: false
 		}, function (fileEntry) {
 			fileEntry.file(function (file) {
 				var reader = new FileReader();
 				reader.onloadend = function (e) {
-					console.log('File read: "' + this.result + '"');
-					loadScreen(this.result || '{}');
+					console.log(fileName + ' content: "' + this.result + '"');
+					if (callback) {
+						callback(this.result || '{}');
+					} else {
+						screen.imageData = this.result;
+					}
 				};
 				reader.readAsText(file);
 			}, errorHandler);
 		}, errorHandler);
 	}
 
-	function writeAppDataFile(data) {
+	function write(data, fileName) {
+		var fileName = fileName || 'tempdata';
 		//remove file first. didn't find a way to clear/overwrite file content.
-		fileSystem.root.getFile('appdata.txt', {}, function (fileEntry) {
-			fileEntry.remove(function () {
-				console.log('File removed.');
-			}, errorHandler);
-		}, errorHandler);
+		remove(fileName);
 
 		//and the recreate it so that its empty.
 		window.webkitStorageInfo.requestQuota(
@@ -58,7 +62,7 @@ angular.module('protoApp').factory('fs', function () {
 		function (grantedBytes) {
 			window.requestFileSystem(PERSISTENT, grantedBytes, function (fs) {
 				fileSystem = fs;
-				fileSystem.root.getFile('appdata.txt', {
+				fileSystem.root.getFile(fileName, {
 					create: true,
 					exclusive: false
 				}, function (fileEntry) {
@@ -72,9 +76,15 @@ angular.module('protoApp').factory('fs', function () {
 						};
 
 						// Create a new Blob and write it to log.txt.
-						var blob = new Blob([JSON.stringify(data)], {
-							type: 'text/plain'
-						});
+						if (fileName == 'tempdata') {
+							var blob = new Blob([JSON.stringify(data)], {
+								type: 'text/plain'
+							});
+						} else {
+							var blob = new Blob([data], {
+								type: 'text/plain'
+							});
+						}
 
 						fileWriter.write(blob);
 						console.log(blob);
@@ -86,6 +96,14 @@ angular.module('protoApp').factory('fs', function () {
 		function (e) {
 			console.log('Error', e);
 		});
+	}
+
+	function remove(fileName) {
+		fileSystem.root.getFile(fileName, {}, function (fileEntry) {
+			fileEntry.remove(function () {
+				console.log('File removed.');
+			}, errorHandler);
+		}, errorHandler);
 	}
 
 	function errorHandler(e) {
@@ -118,7 +136,7 @@ angular.module('protoApp').factory('fs', function () {
 	function addSavetoFileButton(scope) {
 		Downloadify.create('downloadFile', {
 			filename: function () {
-				return 'appdata.txt';
+				return 'Your App Name.txt';
 			},
 			data: JSON.stringify(scope.screens),
 			onComplete: function () {
@@ -173,7 +191,7 @@ angular.module('protoApp').factory('fs', function () {
 		    //setTimeout("document.getElementById('progress_bar').className='';", 2000);
 		    console.log("Import File: " + e.target.result);
 		    scope.loadScreen(e.target.result);
-		    writeAppDataFile(JSON.parse(e.target.result));
+		    write(JSON.parse(e.target.result));
 		    progress_bar.style.visibility = 'hidden';
 	    }
 
@@ -183,7 +201,8 @@ angular.module('protoApp').factory('fs', function () {
 
 	return {
 		requestForFile: requestForFile,
-		writeAppDataFile: writeAppDataFile,
+		read: read,
+		write: write,
 		download: addSavetoFileButton,
 		handleImportFile: handleImportFile
 	};
