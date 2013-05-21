@@ -11,6 +11,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 
 	$scope.loadScreen = function (data) {
 		$scope.screens = JSON.parse(data);
+		$scope.images = {}; //This is the only model that hold imageData. Key it using screenId
 		$scope.screenList = _.keys($scope.screens);
 		$scope.screenList = _.map($scope.screenList, function (s) {
 			return {
@@ -18,7 +19,8 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 				imageData: $scope.screens[s].imageData,
 				getImageData: function (){
 					console.log('reading ' + $scope.screens[s].imageName);
-					fs.read($scope.screens[s].imageName, '', $scope.screens[s]);
+					$scope.images[s] = {};
+					fs.read($scope.screens[s].imageName, '', $scope.images[s]);
 				},
 				imageName: $scope.screens[s].imageName
 			};
@@ -31,9 +33,6 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 
 		//Hack to refresh images that are read asynchrously
 		setTimeout(function(){
-			_.each($scope.screenList, function (s) {
-				s.imageData = $scope.screens[s.id].imageData;
-			});
 			$scope.$apply();
 		}, 2000);
 	}
@@ -122,7 +121,6 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 					$scope.screens[id] = {
 						id: id,
 						imageName: imageName,
-						//imageData:e.target.result,
 						writeImageData: (function (){
 							fs.write(e.target.result, imageName);
 						})(),

@@ -31,7 +31,7 @@ angular.module('protoApp').factory('fs', function () {
 		});
 	}
 
-	function read(fileName, callback, screen) {
+	function read(fileName, callback, image) {
 		fileSystem.root.getFile(fileName, {
 			create: false
 		}, function (fileEntry) {
@@ -42,7 +42,7 @@ angular.module('protoApp').factory('fs', function () {
 					if (callback) {
 						callback(this.result || '{}');
 					} else {
-						screen.imageData = this.result;
+						image.imageData = this.result;
 					}
 				};
 				reader.readAsText(file);
