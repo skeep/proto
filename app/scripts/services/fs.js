@@ -1,4 +1,4 @@
-angular.module('protoApp').factory('fs', function () {
+angular.module('protoApp').factory('fs', function (uuid) {
 	'use strict';
 
 	// Note: The file system has been prefixed as of Google Chrome 12:
@@ -199,12 +199,64 @@ angular.module('protoApp').factory('fs', function () {
 	    reader.readAsBinaryString(evt.target.files[0]);
 	}
 
+	function handleFileSelect(evt, scope) {
+		evt.stopPropagation();
+		evt.preventDefault();
+
+		var files = evt.dataTransfer.files; // FileList object.
+
+		// files is a FileList of File objects. List some properties.
+		var output = [];
+
+		// Loop through the FileList and render image files as thumbnails.
+		for (var i = 0, f; f = files[i]; i++) {
+
+			// Only process image files.
+			if (!f.type.match('image.*')) {
+				continue;
+			}
+
+			var reader = new FileReader();
+
+			// Closure to capture the file information.
+			reader.onload = (function (theFile) {
+				return function (e) {
+					// Render thumbnail.
+					var id = uuid.get(),
+						imageName = escape(theFile.name);
+
+					scope.screens[id] = {
+						id: id,
+						imageName: imageName,
+						writeImageData: (function (){
+							write(e.target.result, imageName);
+						})(),
+						hotspots: []
+					};
+					scope.set(scope.screens);
+				};
+			})(f);
+
+			// Read in the image file as a data URL.
+			reader.readAsDataURL(f);
+		}
+	}
+
+	function handleDragOver(evt) {
+		evt.stopPropagation();
+		evt.preventDefault();
+		evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+	}
+
+
 	return {
 		requestForFile: requestForFile,
 		read: read,
 		write: write,
 		download: addSavetoFileButton,
-		handleImportFile: handleImportFile
+		handleImportFile: handleImportFile,
+		handleFileSelect: handleFileSelect,
+		handleDragOver: handleDragOver
 	};
 
 });
