@@ -134,6 +134,11 @@ angular.module('protoApp').factory('fs', function (uuid) {
 	}
 
 	function addSavetoFileButton(scope) {
+
+		for (var image in scope.images) {
+			scope.screens[image].imageData = scope.images[image].imageData;
+		}
+
 		Downloadify.create('downloadFile', {
 			filename: function () {
 				return 'Your App Name.txt';

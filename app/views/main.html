@@ -8,6 +8,9 @@
         <button class="btn btn-primary" ng-click="changeMode()">
             Switch Preview/Edit Mode
         </button>
+        <button class="btn btn-primary" ng-click="download()">
+            Export Project
+        </button>
     </div>
 </header>
 <div class="edit row-fluid" ng-show="editMode">
@@ -47,7 +50,7 @@
     </div>
     <div class="spot-list">
         <p id="downloadFile">
-            You must have Flash 10 installed to download App Data file.
+            <!-- You must have Flash 10 installed to download App Data file. -->
         </p>
         <div class="counter">
             <span class="badge badge-warning">{{screen.hotspots.length}}</span> hotspots
