@@ -1,14 +1,25 @@
 angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 	'use strict';
 
-	$scope.set = function (data) {
+    /**
+     *
+     * @param data
+     */
+    $scope.set = function (data) {
 		fs.write(data);
 	};
 
-	$scope.reset = function () {
+    /**
+     *
+     */
+    $scope.reset = function () {
 		fs.write({});
 	};
 
+    /**
+     *
+     * @param data
+     */
 	$scope.loadScreen = function (data) {
 		$scope.screens = JSON.parse(data);
 		$scope.images = {}; //This is the only model that hold imageData. Key it using screenId
@@ -37,7 +48,10 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 		}, 2000);
 	}
 
-	$scope.download = function () {
+    /**
+     *
+     */
+    $scope.download = function () {
 		fs.download($scope);
 	} 
 
@@ -50,20 +64,36 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 	fs.requestForFile($scope.loadScreen);
 
 	$scope.editMode = true;
-	$scope.changeMode = function (){
+    /**
+     *
+     */
+    $scope.changeMode = function (){
 		$scope.editMode = !$scope.editMode;
 	};
 
+    /**
+     *
+     * @param screenId
+     */
 	$scope.changeScreen = function (screenId) {
 		$scope.screen = $scope.screens[screenId];
 	};
 
-	$scope.deleteScreen = function (screenId) {
+    /**
+     *
+     * @param screenId
+     */
+    $scope.deleteScreen = function (screenId) {
 		delete $scope.screens[screenId];
 		$scope.set($scope.screens);
 	};
 
-	$scope.addSpot = function (e, screenId) {
+    /**
+     *
+     * @param e
+     * @param screenId
+     */
+    $scope.addSpot = function (e, screenId) {
 		$scope.screens[screenId].hotspots.push({
 			'top': e.offsetY - 28,
 			'left': e.offsetX - 2,
@@ -73,18 +103,33 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 		});
 		$scope.set($scope.screens);
 	};
-	$scope.deleteSpot = function (screenId, spotIndex) {
+
+    /**
+     *
+     * @param screenId
+     * @param spotIndex
+     */
+    $scope.deleteSpot = function (screenId, spotIndex) {
 		$scope.screens[screenId].hotspots.splice(spotIndex, 1)
 		$scope.set($scope.screens);
 	};
 
-	$scope.selectTarget = function (screen, index) {
+    /**
+     *
+     * @param screen
+     * @param index
+     */
+    $scope.selectTarget = function (screen, index) {
 		targetSelectionMode = true;
 		baseScreenId = screen;
 		$scope.spotId = index;
 	};
 
-	$scope.selectScreen = function (screenId) {
+    /**
+     *
+     * @param screenId
+     */
+    $scope.selectScreen = function (screenId) {
 		if (targetSelectionMode) {
 			$scope.screens[baseScreenId].hotspots[$scope.spotId].target = screenId;
 			targetSelectionMode = false,
@@ -96,6 +141,10 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 		}
 	};
 
+    /**
+     *
+     * @param evt
+     */
 	function handleFileSelect(evt) {
 		fs.handleFileSelect(evt, $scope);
 	}
@@ -105,7 +154,11 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 	dropZone.addEventListener('dragover', fs.handleDragOver, false);
 	dropZone.addEventListener('drop', handleFileSelect, false);
 
-	function handleImportFile(evt) {
+    /**
+     *
+     * @param evt
+     */
+    function handleImportFile(evt) {
 	    fs.handleImportFile(evt, $scope);
 	}
 

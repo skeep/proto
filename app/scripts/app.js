@@ -1,3 +1,6 @@
+/**
+ *
+ */
 angular.module('protoApp', [])
   .config(function ($routeProvider) {
     'use strict';

@@ -1,3 +1,6 @@
+/**
+ *
+ */
 angular.module('protoApp').factory('uuid', function () {
 	/**
 	 * Create and return a "version 4" RFC-4122 UUID string.
@@ -17,7 +20,12 @@ angular.module('protoApp').factory('uuid', function () {
 	 * @return {String} a "version 4" RFC-4122 UUID string
 	 */
 	'use strict';
-	function randomUUID() {
+
+    /**
+     *
+     * @returns {*}
+     */
+    function randomUUID() {
 		var s = [],
 			itoh = '0123456789ABCDEF';
 		// Make array of random hex digits. The UUID only has 32 digits in it, but we
