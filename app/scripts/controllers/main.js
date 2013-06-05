@@ -29,7 +29,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 			$scope.screen = $scope.screens[$scope.screenList[0].id];
 			$scope.$apply();
 		}
-		//fs.download($scope);
+		fs.readTemplateFile();
 
 		//Hack to refresh images that are read asynchrously
 		setTimeout(function(){

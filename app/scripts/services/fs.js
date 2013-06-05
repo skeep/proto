@@ -7,6 +7,7 @@ angular.module('protoApp').factory('fs', function (uuid) {
 	var reader;
 	var progress = document.querySelector('.percent');
 	var progress_bar = document.getElementById('progress_bar');
+	var templateFile = '';
 
 	function requestForFile(callback, fileName) {
 		var fileName = fileName || 'tempdata'; //if no fileName passed, it is temp data file that we have to work on!!!
@@ -133,6 +134,18 @@ angular.module('protoApp').factory('fs', function (uuid) {
 		console.log('Error: ' + msg);
 	}
 
+	function readFile() {
+		templateFile = '';
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function(){
+		  if(xmlhttp.status==200 && xmlhttp.readyState==4){
+		    templateFile = xmlhttp.responseText;
+		  }
+		}
+		xmlhttp.open("GET","appTemp.js",true);
+		xmlhttp.send();
+	}
+
 	function addSavetoFileButton(scope) {
 
 		for (var image in scope.images) {
@@ -141,9 +154,9 @@ angular.module('protoApp').factory('fs', function (uuid) {
 
 		Downloadify.create('downloadFile', {
 			filename: function () {
-				return 'Your App Name.txt';
+				return 'Your App Name.html';
 			},
-			data: JSON.stringify(scope.screens),
+			data: templateFile + 'var data = ' + JSON.stringify(scope.screens) + '</script></body></html>',
 			onComplete: function () {
 				alert('Your File Has Been Saved!');
 			},
@@ -257,6 +270,7 @@ angular.module('protoApp').factory('fs', function (uuid) {
 	return {
 		requestForFile: requestForFile,
 		read: read,
+		readTemplateFile: readFile,
 		write: write,
 		download: addSavetoFileButton,
 		handleImportFile: handleImportFile,
