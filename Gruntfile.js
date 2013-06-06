@@ -225,7 +225,7 @@ module.exports = function (grunt) {
         files: {
           '<%= yeoman.dist %>/scripts/scripts.js': [
             '<%= yeoman.dist %>/scripts/scripts.js'
-          ],
+          ]
         }
       }
     },
@@ -255,7 +255,8 @@ module.exports = function (grunt) {
             'images/{,*/}*.{gif,webp}',
             'Procfile',
             'server.js',
-            'package.json'
+            'package.json',
+            'appTemp.js'
           ]
         }]
       }
