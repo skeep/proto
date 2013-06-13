@@ -30,7 +30,7 @@ App
 <body ng-app="protoApp">
 <div class="screen" ng-controller="MainCtrl">
 <img ng-src="{{screen.imageData}}" style="width:100%">
-<span class="link" ng-click="changeScreen(spot.target)" style="background:yellow; top:{{spot.top+28}}px; left: {{spot.left+2}}px; width:{{spot.width}}px; height: {{spot.height}}px"
+<span class="link" ng-click="changeScreen(spot.target)" style="top:{{spot.top+28}}px; left: {{spot.left+2}}px; width:{{spot.width}}px; height: {{spot.height}}px"
 ng-repeat="spot in screen.hotspots">
 </span>
 </div>
