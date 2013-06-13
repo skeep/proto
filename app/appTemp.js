@@ -18,7 +18,7 @@ App
 
 .link {
     position:absolute;
-    background:#FF0;
+    /*background:#FF0;*/
     -ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
     filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
     opacity:.2;
