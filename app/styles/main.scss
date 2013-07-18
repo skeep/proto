@@ -7,12 +7,12 @@ body {
 }
 
 .edit, .view {
-  overflow: hidden;
+  overflow: auto;
   margin-top: 60px;
 }
 
 .screen-holder, .config {
-  position: fixed;
+  //position: fixed;
 }
 
 .screen {
@@ -37,7 +37,8 @@ header {
   .btn {
     float: right;
   }
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8)
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  z-index: 1000;
 }
 
 .spot-holder {
