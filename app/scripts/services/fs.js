@@ -189,7 +189,7 @@ angular.module('protoApp').factory('fs', function (uuid) {
 
         Downloadify.create('downloadFile', {
             filename: function () {
-                return 'Your App Name.html';
+                return scope.appName+'.html';
             },
             data: templateFile + 'var data = ' + JSON.stringify(scope.screens) + '</script></body></html>',
             onComplete: function () {

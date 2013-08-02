@@ -1,6 +1,7 @@
 angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 	'use strict';
 
+    $scope.appName = 'myApp';
     /**
      *
      * @param data
