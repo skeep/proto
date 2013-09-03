@@ -65,10 +65,16 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 	fs.requestForFile($scope.loadScreen);
 
 	$scope.editMode = true;
+  $scope.showHotspot = true;
+
+  $scope.toggleSpotList = function(){
+    $scope.showHotspot = !$scope.showHotspot;
+  };
+
     /**
      *
      */
-    $scope.changeMode = function (){
+  $scope.changeMode = function (){
 		$scope.editMode = !$scope.editMode;
 	};
 
