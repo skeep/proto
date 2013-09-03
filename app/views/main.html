@@ -70,8 +70,8 @@
 <div class="view" ng-show="!editMode">
     <div class="screen">
         <img ng-src="{{images[screen.id].imageData}}" ng-init="screen.getImageData()">
-        <span class="link" ng-click="changeScreen(spot.target)" style="top:{{spot.top+28}}px; left: {{spot.left+2}}px; width:{{spot.width}}px; height: {{spot.height}}px"
-        ng-repeat="spot in screen.hotspots">
+        <span class="link" ng-click="changeScreen(spot.target)" style="top:{{spot.top+28}}px; left: {{spot.left+2}}px; width:{{spot.width}}px; height: {{spot.height}}px" ng-repeat="spot in screen.hotspots">
+            <span class="dot"  style="top:{{((spot.height/2)-10)}}px; left: {{((spot.width/2)-10)}}px;"></span>
         </span>
     </div>
 </div>
