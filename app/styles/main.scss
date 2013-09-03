@@ -104,12 +104,20 @@ header {
 
 .link {
   position: absolute;
-  background: yellow;
+  //background: yellow;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
   opacity: .2;
   display: block;
   cursor: pointer;
+  .dot{
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: #000000;
+    position: relative;
+    border-radius: 20px;
+  }
 }
 
 .image-list {
