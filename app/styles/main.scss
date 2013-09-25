@@ -2,7 +2,7 @@
 @import "animation";
 
 body {
-  background: rgba(0, 0, 0, 0.8) url('../../images/concrete_wall_@2X.png');
+  background: rgba(0, 0, 0, 0.8) url('../images/concrete_wall_@2X.png');
 
 }
 
@@ -189,7 +189,7 @@ body {
 
 .spot-list {
   position: fixed;
-  width: 200px;
+  //width: 200px;
   right: 0;
   top: 0px;
   color: #000000;
@@ -213,6 +213,7 @@ body {
         margin-bottom: 10px;
         span {
           margin-right: 5px;
+          display: block;
           &:hover {
             cursor: pointer;
             text-decoration: underline;
@@ -222,8 +223,10 @@ body {
           border-radius: 10px;
           visibility: hidden;
         }
-        &:hover .btn{
-          visibility: visible;
+        &:hover{
+          .btn{
+            visibility: visible;
+          }
         }
       }
     }

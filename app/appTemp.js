@@ -21,7 +21,7 @@ App
     /*background:#FF0;*/
     -ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
     filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
-    opacity:.2;
+    opacity:0;
     display:block;
     cursor:pointer;
 }

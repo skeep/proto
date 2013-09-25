@@ -67,12 +67,13 @@
             <div class="list" ng-show="!showHotspot">
                 <ul class="unstyled">
                     <li ng-repeat="spot in screen.hotspots">
-                        <button class="btn btn-mini btn-danger" ng-click="deleteSpot(screen.id,$index)">
-                            X
-                        </button>
                         <span ng-click="selectTarget(screen.id, $index)">
                             {{screens[spot.target].imageName || 'No target yet ...'}}
                         </span>
+                        <button class="btn btn-mini btn-danger" ng-click="deleteSpot(screen.id,$index)">
+                            X
+                        </button>
+                        <button class="btn btn-mini btn-primary" ng-click="makePersistent(spot, screen.id)">Make persistent</button>
                     </li>
                 </ul>
             </div>

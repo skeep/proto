@@ -202,7 +202,7 @@ angular.module('protoApp').factory('fs', function (uuid) {
                 alert('You must put something in the File Contents or there will be nothing to save!');
             },
             swf: 'components/downloadify/downloadify.swf',
-            downloadImage: 'images/download.png',
+            downloadImage: 'components/downloadify/download.png',
             width: 100,
             height: 30,
             transparent: true,

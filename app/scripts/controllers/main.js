@@ -90,7 +90,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
      *
      * @param screenId
      */
-    $scope.deleteScreen = function (screenId) {
+  $scope.deleteScreen = function (screenId) {
 		delete $scope.screens[screenId];
 		$scope.set($scope.screens);
 	};
@@ -116,20 +116,31 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
      * @param screenId
      * @param spotIndex
      */
-    $scope.deleteSpot = function (screenId, spotIndex) {
+  $scope.deleteSpot = function (screenId, spotIndex) {
 		$scope.screens[screenId].hotspots.splice(spotIndex, 1)
 		$scope.set($scope.screens);
 	};
+
+  $scope.makePersistent = function(spot, screenId){
+    _.each($scope.screens, function(screen){
+      if(screen.id !== screenId){
+        screen.hotspots.push(spot);
+      }
+    });
+  };
 
     /**
      *
      * @param screen
      * @param index
      */
-    $scope.selectTarget = function (screen, index) {
-		targetSelectionMode = true;
-		baseScreenId = screen;
-		$scope.spotId = index;
+  $scope.selectTarget = function (screen, index) {
+		targetSelectionMode = !targetSelectionMode;
+    if(targetSelectionMode){
+      baseScreenId = screen;
+      $scope.spotId = index;
+    }
+
 	};
 
     /**

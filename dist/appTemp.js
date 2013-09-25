@@ -21,17 +21,26 @@ App
     /*background:#FF0;*/
     -ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
     filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
-    opacity:.2;
+    opacity:0;
     display:block;
     cursor:pointer;
+}
+.link .dot{
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: #000000;
+  position: relative;
+  border-radius: 20px;
 }
 </style>
 </head>
 <body ng-app="protoApp">
 <div class="screen" ng-controller="MainCtrl">
 <img ng-src="{{screen.imageData}}" style="width:100%">
-<span class="link" ng-click="changeScreen(spot.target)" style="top:{{spot.top+28}}px; left: {{spot.left+2}}px; width:{{spot.width}}px; height: {{spot.height}}px"
-ng-repeat="spot in screen.hotspots">
+  <span class="link" ng-click="changeScreen(spot.target)" style="top:{{spot.top+28}}px; left: {{spot.left+2}}px; width:{{spot.width}}px; height: {{spot.height}}px" ng-repeat="spot in screen.hotspots">
+    <span class="dot"  style="top:{{((spot.height/2)-10)}}px; left: {{((spot.width/2)-10)}}px;"></span>
+  </span>
 </span>
 </div>
 <script>
