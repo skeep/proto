@@ -260,6 +260,16 @@ module.exports = function (grunt) {
           ]
         }]
       }
+    },
+    shell: {
+      deploy: {
+        command: [
+          'git add .',
+          'git commit -m "new build"',
+          'git push origin master',
+          'git subtree push --prefix dist heroku master'
+        ].join('&&')
+      }
     }
   });
 
@@ -299,7 +309,8 @@ module.exports = function (grunt) {
     'ngmin',
     'uglify',
     'rev',
-    'usemin'
+    'usemin',
+    'shell:deploy'
   ]);
 
   grunt.registerTask('default', ['build']);

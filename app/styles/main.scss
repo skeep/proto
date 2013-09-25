@@ -27,7 +27,7 @@ body {
 .spot-holder {
   position: absolute;
   .spot {
-    background: red;
+    background: transparent;
     opacity: .5;
     display: block;
     text-align: center;
@@ -41,8 +41,10 @@ body {
     @include border-radius(3px);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
     cursor: pointer;
+    border: 3px solid red;
     &.haveTarget {
-      background: green;
+      background: transparent;
+      border: 3px solid green;
     }
   }
   &.select-target {
