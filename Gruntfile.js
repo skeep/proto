@@ -309,8 +309,7 @@ module.exports = function (grunt) {
     'ngmin',
     'uglify',
     'rev',
-    'usemin',
-    'shell:deploy'
+    'usemin'
   ]);
 
   grunt.registerTask('default', ['build']);
