@@ -146,8 +146,9 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
     if(targetSelectionMode){
       baseScreenId = screen;
       $scope.spotId = index;
+    } else {
+      $scope.spotId = null;
     }
-
 	};
 
     /**
@@ -161,6 +162,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 			baseScreenId = null,
 			$scope.spotId = null;
 			$scope.set($scope.screens);
+      targetSelectionMode = false;
 		} else {
 			$scope.changeScreen(screenId);
 		}
