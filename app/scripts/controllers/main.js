@@ -46,6 +46,7 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 		//Hack to refresh images that are read asynchrously
 		setTimeout(function(){
 			$scope.$apply();
+      console.log($scope.screens);
 		}, 2000);
 	}
 
@@ -159,6 +160,10 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 		}
 	};
 
+  $scope.setScreenAsLandingPage = function(screen){
+    $scope.screens.landing = screen.id;
+  };
+
     /**
      *
      * @param evt
@@ -181,4 +186,6 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 	}
 
 	document.getElementById('files').addEventListener('change', handleImportFile, false);
+
+
 });

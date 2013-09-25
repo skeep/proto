@@ -206,12 +206,7 @@ $log:Jc,$parse:Nc,$route:Qc,$routeParams:Rc,$rootScope:Sc,$q:Oc,$sniffer:Tc,$tem
 angular.module('protoApp', []);
 angular.module('protoApp').controller('MainCtrl', function($scope) {
   $scope.images = data;
-  //$scope.screen = $scope.images['A4E47AA9-5B99-40E3-AECC-E0B41DD93467'];
-  for (var firstImage in $scope.images) {
-    break;
-  }
-
-  $scope.screen = $scope.images[firstImage];
+  $scope.screen = $scope.images[$scope.images.landing];
   $scope.changeScreen = function(target){
     $scope.screen = $scope.images[target];
   };
