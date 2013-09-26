@@ -5,6 +5,8 @@
         <!--<div id="progress_bar"><div class="percent">0%</div></div>-->
         <!--<button ng-click="reset()" ng-hide="true">Reset</button>-->
         <br>
+        <a class="btn btn-primary btn-block" href="https://github.com/skeep/proto">Project in Github</a>
+        <!--<br>-->
         <button class="btn btn-inverse btn-block" ng-click="changeMode()">
             Switch Preview/Edit Mode
         </button>
@@ -19,8 +21,8 @@
             <div id="drop_zone" class="dropzone">
                 + drop files here
             </div>
-            <div class="image" ng-repeat="screen in screenList">
-                <input type="radio" name="screens" id="radio_{{$index}}" ng-checked="$index == 1">
+            <div class="image" ng-repeat="screen in screenList" ng-class="{'landing':screenList.landing == screen.id }">
+                <input type="radio" name="screens" id="radio_{{$index}}" ng-checked="$index == 0">
                 <label for="radio_{{$index}}" title="{{screen.imageName}}">
                     <img ng-src="{{images[screen.id].imageData}}" ng-init="screen.getImageData()"
                          ng-click="selectScreen(screen.id)"/>
@@ -35,7 +37,7 @@
 
     </nav>
     <div class="edit span10" ng-show="editMode">
-        <div class="screen-holder">
+        <div class="screen-holder row-fluid">
             <div class="screen">
                 <img ng-src="{{images[screen.id].imageData}}" ng-init="screen.getImageData()"
                      ng-dblclick="addSpot($event,screen.id)">
@@ -80,6 +82,24 @@
                     </li>
                 </ul>
             </div>
+
+        </div>
+
+        <div class="intro" ng-hide="screen.id">
+            <span style="font-size: 150%">Hi there! <strong>Thank you</strong> for dropping by.</span> <br>
+            ProtoApp is a simple application to create workflow demo.
+            <br>
+            It is done by simply creating hot spots on the image and linking the image to the target image.
+            <br>The process is quite simple ...
+            <ul>
+                <li>Drop your images on the big fat "+drop files here" area on the left of the screen.</li>
+                <li>Refresh the screen (this is necessary, otherwise the image will not appear, I am still working on
+                    the fix)
+                </li>
+                <li>Double click on the image to create hot spot, and you can position and resize them.</li>
+                <li>Now double click on the hot spot created to make it accept target. Click on your target image on the left.</li>
+                <li>That's it. You can view how it will look like clicking on preview button and finally click on export button to download the HTML page.</li>
+            </ul>
 
         </div>
     </div>

@@ -17,10 +17,10 @@ body {
 
 .screen {
   position: fixed;
-  margin: 0 auto;
+  margin: 20px auto 0 auto;
   width: 980px;
   img {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2)
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9)
   }
 }
 
@@ -122,9 +122,10 @@ body {
   //width: 100px;
   //position: absolute;
   //top: 60px;
+  //-webkit-perspective: 1500px;
   margin-top: 20px;
   .image {
-    border: 4px solid rgba(255, 255, 255,.8);
+    //border: 4px solid rgba(255, 255, 255,.8);
     margin: 0 auto 10px auto;
     box-sizing: border-box;
     border-radius: 5px;
@@ -133,6 +134,10 @@ body {
     height: 100px;
     width: 100%;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+    position: relative;
+    //-webkit-transform: rotateX(-50deg);
+    //-webkit-transform-origin: bottom center;
+    //-webkit-transform-style: preserve-3d;
     //box-shadow:0 0 0 1px #111111, 0 0 2px 4px #666666, 0 0 0 5px #111111, 0 5px 25px rgba(0,0,0,.7);;
     margin: 0 10px 20px 0;
     label {
@@ -154,7 +159,7 @@ body {
     }
     span {
       position: absolute;
-      bottom: 0;
+      top: 0;
       left: 0;
       display: block;
       width: 100%;
@@ -162,12 +167,12 @@ body {
       background: white;
       color: black;
       border-top: 1px solid rgba(0, 0, 0, 0.5);
-      -webkit-border-bottom-right-radius: 10px;
-      -webkit-border-bottom-left-radius: 10px;
-      -moz-border-radius-bottomright: 10px;
-      -moz-border-radius-bottomleft: 10px;
-      border-bottom-right-radius: 10px;
-      border-bottom-left-radius: 10px;
+      -webkit-border-bottom-right-radius: 5px;
+      -webkit-border-bottom-left-radius: 5px;
+      -moz-border-radius-bottomright: 5px;
+      -moz-border-radius-bottomleft: 5px;
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
       text-align: center;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -187,6 +192,9 @@ body {
     }
     &:hover .btn{
       display: inline-block;
+    }
+    &:active{
+      top: 1px;
     }
   }
 }
@@ -288,4 +296,16 @@ input[type=file] {
 
 #downloadFile {
   margin-top: 5px;
+}
+
+.intro{
+  color: white;
+  font-family: 'Indie Flower', cursive;
+  font-size: 28px;
+  margin: 100px auto;
+  width: 70%;
+  line-height: 1.5em;
+  li{
+    line-height: 1.2em;
+  }
 }

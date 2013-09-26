@@ -24,7 +24,10 @@ angular.module('protoApp').controller('MainCtrl', function ($scope, uuid, fs) {
 	$scope.loadScreen = function (data) {
 		$scope.screens = JSON.parse(data);
 		$scope.images = {}; //This is the only model that hold imageData. Key it using screenId
-		$scope.screenList = _.keys($scope.screens);
+		$scope.screenList = _.reject(_.keys($scope.screens), function(d){
+      return d === 'landing';
+    }); //remove landing key from the list
+
 		$scope.screenList = _.map($scope.screenList, function (s) {
 			return {
 				id: s,
